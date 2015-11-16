@@ -49,3 +49,5 @@ Temporary Items
 # other files
 *.p
 mysqlid.txt
+*.png
+*HEX.txt
