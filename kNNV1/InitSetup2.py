@@ -85,6 +85,28 @@ def setImgMode(openimg):
         sys.exit(1)
     return p
     
+def biggestDims(MaxX, MaxY, xdim, ydim):
+    if (xdim > MaxX):
+        MaxX = xdim
+#        print "({}, {})".format(MaxX, MaxY)
+            
+    if (ydim > MaxY):
+        MaxY = ydim
+#        print "({}, {})".format(MaxX, MaxY)
+            
+    return (MaxX, MaxY)
+    
+def smallestDims(MinX, MinY, xdim, ydim):
+    if (xdim < MinX):
+        MinX = xdim
+#        print "({}, {})".format(MaxX, MaxY)
+            
+    if (ydim < MinY):
+        MinY = ydim
+#        print "({}, {})".format(MaxX, MaxY)
+            
+    return (MinX, MinY)
+    
 def makeTestArrays(cursor, offset, labelarr, imgarr):
     o = offset*10    
     counter = 0
@@ -115,6 +137,39 @@ def makeTestArrays(cursor, offset, labelarr, imgarr):
             
         counter+=1
     return (labelarr, imgarr)
+    
+def padImages(img_matx, offset, rsize, csize):
+    z_arr = np.zeros((rsize, csize), dtype = np.int)
+    z_arr[:][:] = 255 #white bkgd
+#    print z_arr.shape
+    (rows, cols) = img_matx.shape
+#    print "rows = {}, cols = {}".format(rows,cols)
+    
+    if (rows % 2): #if odd
+        rtemp = rows + 1
+    else:
+        rtemp = rows
+        
+    if (cols % 2):
+        ctemp = cols + 1
+    else:
+        ctemp = cols
+        
+#    xtemp = xtemp / 2
+#    ytemp = ytemp / 2
+    
+    c_start = (csize / 2) - (ctemp / 2)
+    r_start = (rsize / 2) - (rtemp / 2)
+#    print "c = {}, r = {}".format(c_start, r_start)
+    
+    for i in range(rows):
+        for j in range(cols):
+#            print "i = y = row = {}, j = x = col = {}".format(i,j)
+            z_arr[r_start + i][c_start + j] = img_matx[i][j]
+            
+#    pad_array[offset] = z_arr
+#    return pad_array
+    return z_arr
     
 ####
 class NearestNeighborClassifier(object):
@@ -206,6 +261,7 @@ if __name__ == '__main__':
     
     imgarr = [None]*40
     labelarr = [None]*40
+    padarr = [None]*40
       
     
     (h,u,pw) = mysqlLogin('C:\Users\USER\Documents\mysqlid.txt')
@@ -261,6 +317,28 @@ if __name__ == '__main__':
     
     print labelarr
     
+    MaxX = 0
+    MaxY = 0
+    
+    MinX = 1000
+    MinY = 1000
+    
+    for i in range(len(imgarr)):
+        (xdim, ydim) = imgarr[i].shape
+        (MaxX, MaxY) = biggestDims(MaxX, MaxY, xdim, ydim)
+        (MinX, MinY) = smallestDims(MinX, MinY, xdim, ydim)
+        
+    print "Maximum Dimensions in array: ({}, {})".format(MaxX, MaxY)
+    print "Minimum Dimensions in array: ({}, {})".format(MinX, MinY)
+    
+    #set pixel dims of padded images
+    xsize = 120
+    ysize = 120
+    
+    for i in range(len(imgarr)):
+        padarr[i] = padImages(imgarr[i], i, ysize, xsize)
+        print "Success #{}".format((i+1))    
+    
 #    #Visualization of random elements
 #    # Get the figure and axes.
 #    fig, axes = pyplot.subplots(5, 5)
@@ -268,9 +346,9 @@ if __name__ == '__main__':
 #    fig.suptitle("Random Sampling of Glyphs")
 #    
 #    # Plot random images.
-#    indices = np.random.randint(len(imgarr), size=25)
+#    indices = np.random.randint(len(padarr), size=25)
 #    for axis, index in zip(axes, indices):
-#        image = imgarr[index]#[index, :, :]
+#        image = padarr[index]#[index, :, :]
 #        axis.get_xaxis().set_visible(False)
 #        axis.get_yaxis().set_visible(False)
 #        axis.imshow(image, cmap = pyplot.cm.Greys_r)
@@ -279,8 +357,8 @@ if __name__ == '__main__':
     # Convert our data set into an easy format to use.
     # This is a list of (x, y) pairs. x is an image, y is a label.
     dataset = []
-    for i in xrange(len(imgarr)):
-        dataset.append((imgarr[i], labelarr[i]))
+    for i in xrange(len(padarr)):
+        dataset.append((padarr[i], labelarr[i]))
         
     outf3 = open('IS1kNNDataset.txt', 'w')
     outf3.write(' '.join(map(str, dataset)))
