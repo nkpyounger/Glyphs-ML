@@ -137,7 +137,7 @@ def makeTestArrays(cursor, offset, labelarr, imgarr):
     
 def padImages(img_matx, offset, rsize, csize):
     z_arr = np.zeros((rsize, csize), dtype = np.int)
-    print z_arr.shape
+#    print z_arr.shape
     (rows, cols) = img_matx.shape
 #    print "rows = {}, cols = {}".format(rows,cols)
     
@@ -241,6 +241,21 @@ if __name__ == '__main__':
     
     for i in range(len(imgarr)):
         padarr[i] = padImages(imgarr[i], i, ysize, xsize)
+        print "Success #{}".format((i+1))
+        
+    #Visualization of random elements
+    # Get the figure and axes.
+    fig, axes = pyplot.subplots(5, 5)
+    axes = axes.reshape(25)
+    fig.suptitle("Random Sampling of Glyphs")
+    
+    # Plot random images.
+    indices = np.random.randint(len(padarr), size=25)
+    for axis, index in zip(axes, indices):
+        image = padarr[index]#[index, :, :]
+        axis.get_xaxis().set_visible(False)
+        axis.get_yaxis().set_visible(False)
+        axis.imshow(image, cmap = pyplot.cm.Greys_r)
         
             
         
