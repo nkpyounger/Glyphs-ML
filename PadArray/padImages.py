@@ -137,7 +137,7 @@ def makeTestArrays(cursor, offset, labelarr, imgarr):
     
 def padImages(img_matx, offset, rsize, csize):
     z_arr = np.zeros((rsize, csize), dtype = np.int)
-    z_arr[:][:] = 255
+    z_arr[:][:] = 255 #white bkgd
 #    print z_arr.shape
     (rows, cols) = img_matx.shape
 #    print "rows = {}, cols = {}".format(rows,cols)
