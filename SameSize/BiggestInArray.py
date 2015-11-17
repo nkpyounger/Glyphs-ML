@@ -85,13 +85,24 @@ def setImgMode(openimg):
 def biggestDims(MaxX, MaxY, xdim, ydim):
     if (xdim > MaxX):
         MaxX = xdim
-        print "({}, {})".format(MaxX, MaxY)
+#        print "({}, {})".format(MaxX, MaxY)
             
     if (ydim > MaxY):
         MaxY = ydim
-        print "({}, {})".format(MaxX, MaxY)
+#        print "({}, {})".format(MaxX, MaxY)
             
     return (MaxX, MaxY)
+    
+def smallestDims(MinX, MinY, xdim, ydim):
+    if (xdim < MinX):
+        MinX = xdim
+#        print "({}, {})".format(MaxX, MaxY)
+            
+    if (ydim < MinY):
+        MinY = ydim
+#        print "({}, {})".format(MaxX, MaxY)
+            
+    return (MinX, MinY)
     
 def makeTestArrays(cursor, offset, labelarr, imgarr):
     o = offset*10    
@@ -180,12 +191,16 @@ if __name__ == '__main__':
     MaxX = 0
     MaxY = 0
     
+    MinX = 1000
+    MinY = 1000
+    
     for i in range(len(imgarr)):
         (xdim, ydim) = imgarr[i].shape
         (MaxX, MaxY) = biggestDims(MaxX, MaxY, xdim, ydim)
+        (MinX, MinY) = smallestDims(MinX, MinY, xdim, ydim)
         
-    print MaxX
-    print MaxY
+    print "Maximum Dimensions in array: ({}, {})".format(MaxX, MaxY)
+    print "Minimum Dimensions in array: ({}, {})".format(MinX, MinY)
         
             
         
