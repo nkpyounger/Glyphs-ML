@@ -199,6 +199,7 @@ class NearestNeighborClassifier(object):
         while len(neighbors) < self.k:
             # Compute distances to every candidate.
             distances = [self.distance(x[0], point) for x in candidates]
+            print distances
             
             # Find the minimum distance neighbor.
             best_distance = min(distances)
@@ -371,7 +372,7 @@ if __name__ == '__main__':
     ###thus far doesn't throw up any errors
     
     # Choose a subset of the test set. Otherwise this will never finish.
-    test_set = imgarr
+    test_set = padarr
     pred = predict_test_set(predictor, test_set)
     
     #labels = np.asarray(labelarr)

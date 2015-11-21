@@ -219,7 +219,8 @@ def euclidean_distance(img1, img2):
     #     img1 - img2 is the pixel-wise difference between the images
     #     (img1 - img2) ** 2 is the same thing, with each value squared
     #     sum((img1 - img2) ** 2) is the sum of the elements in the matrix.
-    return sum((img1 - img2) ** 2) ##IMAGES MUST HAVE SAME DIMENSIONS :(
+#    return sum((img1 - img2) ** 2) ##IMAGES MUST HAVE SAME DIMENSIONS :
+    return sum(sum((img1 - img2) ** 2))#WHYYYYYYYY
     
 from collections import defaultdict
 def get_majority(votes):
@@ -366,8 +367,8 @@ if __name__ == '__main__':
     
     
     ks = [1, 2, 3, 4, 5, 6]
-    predictors = [MNISTPredictor(dataset, k) for k in ks]
-    
+    predictors = [MNISTPredictor(dataset, k) for k in ks] #instantiate 6 nearestneighbor classes
+    #predictors doesn't showin variable list
 #    #set predictor
 #    k = 1
 #    
