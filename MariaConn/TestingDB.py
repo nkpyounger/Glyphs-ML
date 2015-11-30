@@ -121,6 +121,7 @@ if __name__ == '__main__':
     for i in range(lblcount):
         if itemcount[i] > 39:
             print "{}, {}".format(labels[i], itemcount[i])
+            #Aa1, D21, D36, D58, G1, G17, G43, M17, X1
         
     
     mariadb_connection.close()   
