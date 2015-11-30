@@ -265,7 +265,7 @@ if __name__ == '__main__':
     padarr = [None]*40
       
     
-    (h,u,pw) = mysqlLogin('C:\Users\USER\Documents\mysqlid.txt')
+    (h,u,pw) = mysqlLogin('/home/nyounger/Documents/mysqlid.txt')
     
     mariadb_connection = mariadb.connect(host=h, user=u, passwd=pw, db='glyphscopy_testing')
     cursor = mariadb_connection.cursor()

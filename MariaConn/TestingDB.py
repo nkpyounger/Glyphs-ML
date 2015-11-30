@@ -21,7 +21,7 @@ if __name__ == '__main__':
 #    padarr = [None]*40
       
     
-    (h,u,pw) = mysqlLogin('C:\Users\USER\Documents\mysqlid.txt')
+    (h,u,pw) = mysqlLogin('/home/nyounger/Documents/mysqlid.txt')
     
     mariadb_connection = mariadb.connect(host=h, user=u, passwd=pw, db='glyphscopy_testing')
     cursor = mariadb_connection.cursor()
@@ -103,7 +103,7 @@ if __name__ == '__main__':
         some_ID = str(labels[i])[2:-3]
 #        print some_ID
 #        some_ID = labels[i]
-        print "SELECT Sys_FileName FROM sign_list WHERE GardID='%s'AND Src='%s'"%(some_ID, some_src)
+#        print "SELECT Sys_FileName FROM sign_list WHERE GardID='%s'AND Src='%s'"%(some_ID, some_src)
         try:
             cursor.execute("SELECT Sys_FileName FROM sign_list WHERE GardID='%s'AND Src='%s'"%(some_ID, some_src))
         except mariadb.Error as error:
@@ -116,6 +116,12 @@ if __name__ == '__main__':
     
     for i in range(lblcount):
         print "{}, {}".format(labels[i], itemcount[i])
+        
+    print "40 or Greater"
+    for i in range(lblcount):
+        if itemcount[i] > 39:
+            print "{}, {}".format(labels[i], itemcount[i])
+        
     
     mariadb_connection.close()   
     
